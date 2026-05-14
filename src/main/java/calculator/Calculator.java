@@ -46,18 +46,40 @@ public class Calculator extends JFrame {
         // TODO
         // Add a new operation "Sub" for the subtraction of two integers as an (instance of a) Java
         // class (you have yet to write this class)
+        operations.put("Sub", new Sub());
 
         // TODO
         // Add a new operation "Mul" for the multiplication of two integers as an anonymous class
+        operations.put(
+                        "Mul", new Operation(){
+                            public int doOperation(int a, int b) {
+                                return a * b;
+                            }
+                        }
+        );
 
         // TODO
         // Add a new operation "Div" for the division of two integers as a lambda expression
+        operations.put(
+                        "Div", (int a, int b) -> {
+                            try {
+                                return a / b;
+                            }catch (ArithmeticException e) {
+                                System.out.println("Fehler: Division durch Null!");
+                                return 0;
+                            }
+                        }
+        );
+        //ohne try and catch:
+        //operations.put( "Div", (int a, int b) -> a/b);
+
 
         operationSelector = new JComboBox<>();
         operations.forEach((key, value) -> operationSelector.addItem(key));
 
         // TODO
         // Replace the anonymous class with a lambda expression
+        /*
         operationSelector.addActionListener(
                 new ActionListener() {
                     @Override
@@ -68,7 +90,19 @@ public class Calculator extends JFrame {
                             System.out.println("Invalid input.");
                         }
                     }
-                });
+                }
+        );
+         */
+
+        operationSelector.addActionListener(
+                                            (e) -> {
+                                                try {
+                                                    result.setText("" + calculate());
+                                                }catch (NumberFormatException ex) {
+                                                    System.out.println("Invalid input.");
+                                                }
+                                            }
+        );
     }
 
     /**
